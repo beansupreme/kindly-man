@@ -16,4 +16,6 @@
 /log/*
 !/log/.keep
 /tmp
+
 /.idea
+/.rspec
