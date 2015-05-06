@@ -1,3 +1,19 @@
 <h3>What have you learned today?</h3>
 
+<h4>Recorded Facts:</h4>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Subject</th>
+    <th>Date added</th>
+  </tr>
+  <% @facts.each do |fact| %>
+      <tr>
+        <td><%= fact.title %></td>
+        <td><%= fact.subject %></td>
+        <td><%= fact.created_at %></td>
+      </tr>
+  <% end %>
+</table>
+
 <%= link_to "Add a fact", action: "new" %>
