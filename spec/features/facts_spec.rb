@@ -8,7 +8,7 @@ describe 'hitting the homepage' do
   end
 
   it 'allows me to add a new fact' do
-    visit '/'
+    visit '/facts'
 
     click_on 'Add a fact'
 
@@ -21,5 +21,17 @@ describe 'hitting the homepage' do
 
     expect(page).to have_content 'Earthworms'
     expect(page).to have_content 'They come out during rainstorms because it is easy for them to move around'
+  end
+
+  it 'does not allow filling out a blank fact' do
+    visit '/facts/new'
+    
+    fill_in 'fact[title]', with: ''
+    fill_in 'fact[subject]', with: ''
+
+    click_on 'Save Fact'
+
+    expect(page).to have_content "Title can't be blank"
+    expect(page).to have_content "Subject can't be blank"
   end
 end

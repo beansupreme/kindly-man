@@ -4,12 +4,16 @@ class FactsController < ApplicationController
   end
 
   def new
+    @fact = Fact.new
   end
 
   def create
     @fact = Fact.new(fact_params)
-    @fact.save
-    redirect_to facts_path
+    if @fact.save
+      redirect_to facts_path
+    else
+      render 'new'
+    end
   end
 
   private

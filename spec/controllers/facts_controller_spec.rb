@@ -21,18 +21,33 @@ describe FactsController do
       get :new
       expect(response.code).to eq('200')
     end
+
+    it 'initializes a fact' do
+      get :new
+      expect(assigns(:fact)).to be_a(Fact)
+    end
   end
 
   describe '#create' do
-    it 'can create a new fact' do
-      fact_params = {title: 'Kombucha', subject: 'Has scoby'}
-      expect(Fact).to receive(:new).with(fact_params).and_return(Fact.new)
-      post :create, fact: fact_params
+    context 'with valid parameters' do
+      it 'can create a new fact' do
+        fact_params = {title: 'Kombucha', subject: 'Has scoby'}
+        expect(Fact).to receive(:new).with(fact_params).and_return(Fact.new)
+        post :create, fact: fact_params
+      end
+
+      it 'redirects to the fact path' do
+        post :create, fact: {title: 'Tendonitis', subject: 'is annoying'}
+        expect(response).to redirect_to(facts_path)
+      end
     end
 
-    it 'redirects to the fact path' do
-      post :create, fact: {title: 'Tendonitis', subject: 'is annoying'}
-      expect(response).to redirect_to(facts_path)
+    context 'with invalid parameters' do
+      it 're-renders the new page' do
+        post :create, fact: {title: '', subject: ''}
+        expect(response).to render_template('new')
+      end
     end
+
   end
 end
