@@ -3,7 +3,7 @@ require 'rails_helper'
 describe FactsController do
   let(:fact) {Fact.create!(title: 'Ambient Music', subject: 'Can help you study')}
 
-  describe '#index' do
+  describe 'GET #index' do
     it 'returns 200' do
       get :index
       expect(response.code).to eq('200')
@@ -18,7 +18,7 @@ describe FactsController do
     end
   end
 
-  describe '#new' do
+  describe 'GET #new' do
     it 'returns 200' do
       get :new
       expect(response.code).to eq('200')
@@ -30,7 +30,7 @@ describe FactsController do
     end
   end
 
-  describe '#create' do
+  describe 'POST #create' do
     context 'with valid parameters' do
       it 'can create a new fact' do
         fact_params = {title: 'Kombucha', subject: 'Has scoby'}
@@ -52,7 +52,7 @@ describe FactsController do
     end
   end
 
-  describe '#edit' do
+  describe 'GET #edit' do
     it 'can edit an existing fact' do
       get :edit, id: fact.id
       expect(assigns(:fact)).to eq(fact)

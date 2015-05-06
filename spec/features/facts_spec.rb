@@ -3,13 +3,15 @@ require 'rails_helper'
 describe 'hitting the homepage' do
   let!(:fact) { Fact.create!(title: 'Raindrops', subject: 'Usually only grow to about 9mm in diameter') }
 
-  it 'shows a informative page' do
+  it 'shows a informative home page listing the existing facts' do
     visit '/'
 
     expect(page).to have_content 'What have you learned today?'
+    expect(page).to have_content 'Raindrops'
+    expect(page).to have_content 'Usually only grow to about 9mm in diameter'
   end
 
-  it 'allows me to add a new fact' do
+  it 'can add a new fact' do
     visit '/facts'
 
     click_on 'Add a fact'
@@ -37,7 +39,7 @@ describe 'hitting the homepage' do
     expect(page).to have_content "Subject can't be blank"
   end
 
-  it 'allows me to update an existing fact' do
+  it 'can update an existing fact' do
     visit '/facts/'
     click_on 'Edit Fact'
 
@@ -48,7 +50,7 @@ describe 'hitting the homepage' do
     expect(page).to have_content 'Raindrop size'
   end
 
-  it 'allows me to destroy an existing fact' do
+  it 'can destroy an existing fact' do
     visit '/facts/'
     click_on 'Destroy Fact'
 
