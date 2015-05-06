@@ -77,4 +77,16 @@ describe FactsController do
       expect(response).to render_template('edit')
     end
   end
+
+  describe 'DELETE #destroy' do
+    it 'can destroy an existing fact' do
+      delete :destroy, id: fact.id
+      expect(Fact.count).to eq(0)
+    end
+
+    it 'redirects to the facts index' do
+      delete :destroy, id: fact.id
+      expect(response).to redirect_to facts_path
+    end
+  end
 end

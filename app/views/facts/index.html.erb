@@ -14,6 +14,7 @@
         <td><%= fact.subject %></td>
         <td><%= fact.created_at %></td>
         <td><%= link_to "Edit Fact", edit_fact_path(fact) %></td>
+        <td><%= link_to "Destroy Fact", fact_path(fact), method: :delete %></td>
       </tr>
   <% end %>
 </table>

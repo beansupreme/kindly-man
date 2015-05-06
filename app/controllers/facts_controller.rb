@@ -29,6 +29,12 @@ class FactsController < ApplicationController
     end
   end
 
+  def destroy
+    @fact = Fact.find params[:id]
+    @fact.destroy
+    redirect_to facts_path
+  end
+
   private
 
   def fact_params
