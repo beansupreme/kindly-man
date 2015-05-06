@@ -17,7 +17,7 @@ describe 'hitting the homepage' do
     fill_in 'fact[title]', with: 'Earthworms'
     fill_in 'fact[subject]', with: 'They come out during rainstorms because it is easy for them to move around'
 
-    click_on 'Save Fact'
+    click_on 'Create Fact'
 
     expect(page).to have_content 'Earthworms'
     expect(page).to have_content 'They come out during rainstorms because it is easy for them to move around'
@@ -29,7 +29,7 @@ describe 'hitting the homepage' do
     fill_in 'fact[title]', with: ''
     fill_in 'fact[subject]', with: ''
 
-    click_on 'Save Fact'
+    click_on 'Create Fact'
 
     expect(page).to have_content "Title can't be blank"
     expect(page).to have_content "Subject can't be blank"
@@ -42,7 +42,7 @@ describe 'hitting the homepage' do
 
     fill_in 'fact[title]', with: 'Raindrop size'
 
-    click_on 'Save Fact'
+    click_on 'Update Fact'
 
     expect(page).to have_content 'Raindrop size'
   end

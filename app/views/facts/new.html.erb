@@ -1,24 +1,2 @@
 <h3>Enter your new fact</h3>
-<%= form_for :fact, url: facts_path do |f| %>
-    <% if @fact.errors.any? %>
-        <ul>
-          <% @fact.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-          <% end %>
-        </ul>
-    <% end %>
-
-    <p>
-      <%= f.label :title %>
-      <%= f.text_field :title %>
-    </p>
-
-    <p>
-      <%= f.label :subject %>
-      <%= f.text_field :subject %>
-    </p>
-
-    <p>
-      <%= f.submit %>
-    </p>
-<% end %>
+<%= render 'form' %>
