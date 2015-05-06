@@ -6,12 +6,14 @@
     <th>Title</th>
     <th>Subject</th>
     <th>Date added</th>
+    <th colspan="2"></th>
   </tr>
   <% @facts.each do |fact| %>
       <tr>
         <td><%= fact.title %></td>
         <td><%= fact.subject %></td>
         <td><%= fact.created_at %></td>
+        <td><%= link_to "Edit Fact", edit_fact_path(fact) %></td>
       </tr>
   <% end %>
 </table>

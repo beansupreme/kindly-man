@@ -16,6 +16,19 @@ class FactsController < ApplicationController
     end
   end
 
+  def edit
+    @fact = Fact.find params[:id]
+  end
+
+  def update
+    @fact = Fact.find params[:id]
+    if @fact.update(fact_params)
+      redirect_to facts_path
+    else
+      render 'edit'
+    end
+  end
+
   private
 
   def fact_params

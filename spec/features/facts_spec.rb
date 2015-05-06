@@ -25,7 +25,7 @@ describe 'hitting the homepage' do
 
   it 'does not allow filling out a blank fact' do
     visit '/facts/new'
-    
+
     fill_in 'fact[title]', with: ''
     fill_in 'fact[subject]', with: ''
 
@@ -33,5 +33,17 @@ describe 'hitting the homepage' do
 
     expect(page).to have_content "Title can't be blank"
     expect(page).to have_content "Subject can't be blank"
+  end
+
+  it 'allows me to update an existing fact' do
+    fact = Fact.create!(title: 'Raindrops', subject: 'Usually only grow to about 9mm in diameter')
+    visit '/facts/'
+    click_on 'Edit Fact'
+
+    fill_in 'fact[title]', with: 'Raindrop size'
+
+    click_on 'Save Fact'
+
+    expect(page).to have_content 'Raindrop size'
   end
 end
