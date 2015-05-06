@@ -1,0 +1,16 @@
+<h3>Enter your new fact</h3>
+<%= form_for :fact, url: facts_path do |f| %>
+    <p>
+      <%= f.label :title %>
+      <%= f.text_field :title %>
+    </p>
+
+    <p>
+      <%= f.label :subject %>
+      <%= f.text_field :subject %>
+    </p>
+
+    <p>
+      <%= f.submit %>
+    </p>
+<% end %>
