@@ -1,6 +1,10 @@
 class FactsController < ApplicationController
   def index
     @facts = Fact.all
+    respond_to do |format|
+      format.html
+      format.json { render :json => @facts }
+    end
   end
 
   def new
@@ -10,9 +14,15 @@ class FactsController < ApplicationController
   def create
     @fact = Fact.new(fact_params)
     if @fact.save
-      redirect_to facts_path
+      respond_to do |format|
+        format.html { redirect_to facts_path }
+        format.json { render :json => @fact }
+      end
     else
-      render 'new'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render :json => {errors: @fact.errors}, status: :bad_request }
+      end
     end
   end
 
@@ -23,16 +33,25 @@ class FactsController < ApplicationController
   def update
     @fact = Fact.find params[:id]
     if @fact.update(fact_params)
-      redirect_to facts_path
+      respond_to do |format|
+        format.html { redirect_to facts_path }
+        format.json { render :json => @fact }
+      end
     else
-      render 'edit'
+      respond_to do |format|
+        format.html { render 'edit' }
+        format.json { render :json => {errors: @fact.errors}, status: :bad_request }
+      end
     end
   end
 
   def destroy
     @fact = Fact.find params[:id]
     @fact.destroy
-    redirect_to facts_path
+    respond_to do |format|
+      format.html { redirect_to facts_path }
+      format.json { render :json => {}, status: :ok }
+    end
   end
 
   private
