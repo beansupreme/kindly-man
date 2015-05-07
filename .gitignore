@@ -19,3 +19,8 @@
 
 /.idea
 /.rspec
+/vendor/assets/bower_components
+/vendor/assets/bower.json
+/vendor/assets/.bowerrc
+/public/assets
+/node_modules

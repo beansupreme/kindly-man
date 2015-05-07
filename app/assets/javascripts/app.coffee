@@ -1,0 +1,1 @@
+factoids = angular.module('factoids', [])
