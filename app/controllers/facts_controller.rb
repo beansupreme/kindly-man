@@ -3,7 +3,7 @@ class FactsController < ApplicationController
     @facts = Fact.all
     respond_to do |format|
       format.html
-      format.json { render :json => @facts }
+      format.json { render :json => json_attributes(@facts) }
     end
   end
 
@@ -16,7 +16,7 @@ class FactsController < ApplicationController
     if @fact.save
       respond_to do |format|
         format.html { redirect_to facts_path }
-        format.json { render :json => @fact }
+        format.json { render :json => json_attributes(@fact) }
       end
     else
       respond_to do |format|
@@ -35,7 +35,7 @@ class FactsController < ApplicationController
     if @fact.update(fact_params)
       respond_to do |format|
         format.html { redirect_to facts_path }
-        format.json { render :json => @fact }
+        format.json { render :json => json_attributes(@fact) }
       end
     else
       respond_to do |format|
@@ -58,5 +58,9 @@ class FactsController < ApplicationController
 
   def fact_params
     params.require(:fact).permit(:title, :subject)
+  end
+
+  def json_attributes(fact_relation)
+    fact_relation.as_json(only: [:id, :title, :subject])
   end
 end

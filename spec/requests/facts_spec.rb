@@ -11,26 +11,25 @@ describe "Facts API" do
       expect(response.status).to be(200)
     end
 
-    it 'returns all the fact titles' do
+    it 'returns all the facts as json' do
 
       get '/facts', {}, {'Accept' => 'application/json'}
 
       body = JSON.parse(response.body)
 
-      fact_titles = body.map { |fact| fact['title'] }
-      expect(fact_titles).to match_array(['Leukemia Treatment', 'Cancer Treatment'])
-    end
+      expect(body).to eq([
+                             {
+                                 'id' => leukemia_fact.id,
+                                 'title' => 'Leukemia Treatment',
+                                 'subject' =>'Is now being treated with a modified HIV strain'
+                             },
+                             {
+                                 'id' => cancer_fact.id,
+                                 'title' => 'Cancer Treatment',
+                                 'subject' => 'Is focusing on using modified viruses to attack tumors'
+                             }
+                         ])
 
-    it 'returns all the fact subjects' do
-      get '/facts', {}, {'Accept' => 'application/json'}
-
-      body = JSON.parse(response.body)
-
-      fact_subjects = body.map { |fact| fact['subject'] }
-      expect(fact_subjects).to match_array([
-                                             'Is now being treated with a modified HIV strain',
-                                             'Is focusing on using modified viruses to attack tumors'
-                                         ])
     end
   end
 
@@ -39,11 +38,22 @@ describe "Facts API" do
       fact_params = {title: 'Radiohead', subject: 'Is the greatest band in the world'}
       post '/facts', {fact: fact_params}, {'Accept' => 'application/json'}
 
+      expect(Fact.find_by_title('Radiohead')).to be_present
+    end
+
+    it 'returns the JSON body of the new fact' do
+      fact_params = {title: 'Radiohead', subject: 'Is the greatest band in the world'}
+      post '/facts', {fact: fact_params}, {'Accept' => 'application/json'}
+
       expect(response.status).to be(200)
       body = JSON.parse(response.body)
 
-      expect(body['title']).to eq('Radiohead')
-      expect(body['subject']).to eq('Is the greatest band in the world')
+      expect(body).to eq(
+                          'id' => Fact.last.id,
+                          'title' => 'Radiohead',
+                          'subject' => 'Is the greatest band in the world'
+                      )
+
     end
 
     it 'returns 400 with a bad request' do
@@ -60,19 +70,29 @@ describe "Facts API" do
   end
 
   describe 'PUT /facts/:id' do
+    let(:fact_params) {  {subject: 'Is being researched at University of Penn'} }
     it 'updates an existing fact' do
-      fact_params = {subject: 'Is being researched at University of Penn'}
+      put "/facts/#{leukemia_fact.id}", {fact: fact_params}, {'Accept' => 'application/json'}
+
+      expect(Fact.where(subject: 'Is being researched at University of Penn').count).to be(1)
+    end
+
+    it 'returns the json body of the fact' do
       put "/facts/#{leukemia_fact.id}", {fact: fact_params}, {'Accept' => 'application/json'}
 
       expect(response.status).to be(200)
       body = JSON.parse(response.body)
 
-      expect(body['subject']).to eq('Is being researched at University of Penn')
+      expect(body).to eq({
+                             'id' => leukemia_fact.id,
+                             'title' => 'Leukemia Treatment',
+                             'subject' => 'Is being researched at University of Penn'
+                         })
     end
 
     it 'returns a 400 with a bad request' do
-      fact_params = {subject: ''}
-      put "/facts/#{leukemia_fact.id}", {fact: fact_params}, {'Accept' => 'application/json'}
+      invalid_params = {subject: ''}
+      put "/facts/#{leukemia_fact.id}", {fact: invalid_params}, {'Accept' => 'application/json'}
 
       expect(response.status).to be(400)
       body = JSON.parse(response.body)
