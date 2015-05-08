@@ -1,6 +1,10 @@
 class FactsController < ApplicationController
   def index
-    @facts = Fact.all
+    @facts = if params[:keywords]
+      Fact.where('title like ?', "%#{params[:keywords]}%")
+    else
+      Fact.all
+    end
     respond_to do |format|
       format.html
       format.json { render :json => json_attributes(@facts) }

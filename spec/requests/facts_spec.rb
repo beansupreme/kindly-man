@@ -31,6 +31,45 @@ describe "Facts API" do
                          ])
 
     end
+
+    describe 'with search parameters' do
+      let!(:tendonitis_fact) { Fact.create!(title: 'Tendonitis', subject: 'Often occurs in patellar tendon group')}
+      let!(:knee_fact) { Fact.create!(title: 'Knee', subject: 'Is a joint' )}
+      let!(:knight_fact) { Fact.create!(title: 'Knights', subject: 'protected their castle')}
+
+      context 'when the search fields results' do
+        let(:keywords) { 'kn' }
+        it 'returns 200' do
+          xhr :get, '/facts', format: :json, keywords: keywords
+
+          expect(response.status).to eq(200)
+        end
+
+        it 'should return results which match' do
+          xhr :get, '/facts', format: :json, keywords: keywords
+          results = JSON.parse(response.body)
+
+          expect(results.map{|r| r['title']}).to match_array(['Knee', 'Knights'])
+        end
+      end
+
+      context 'when the search fields no results' do
+        let(:keywords) { 'zilch' }
+        it 'returns 200' do
+          xhr :get, '/facts', format: :json, keywords: keywords
+
+          expect(response.status).to eq(200)
+        end
+
+        it 'should return no results' do
+          xhr :get, '/facts', format: :json, keywords: keywords
+          results = JSON.parse(response.body)
+
+          expect(results.map{|r| r['title']}).to be_empty
+        end
+      end
+    end
+
   end
 
   describe 'POST /facts' do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'hitting the homepage' do
+describe 'using the facts page' do
   let!(:fact) { Fact.create!(title: 'Raindrops', subject: 'Usually only grow to about 9mm in diameter') }
 
   it 'shows a informative home page listing the existing facts' do
@@ -55,5 +55,15 @@ describe 'hitting the homepage' do
     click_on 'Destroy Fact'
 
     expect(page).to_not have_content 'Raindrops'
+  end
+
+  it 'can search through facts', js: true do
+    Fact.create!(title: 'bats are cool', subject: 'Bats eat a large number of mosquitos')
+    visit '/facts/'
+
+    fill_in 'keywords', with: 'bats'
+    click_on 'Search'
+
+    expect(page).to have_content 'bats are cool'
   end
 end
