@@ -10,4 +10,7 @@ controllers.controller("FactsController", [ '$scope', '$routeParams', '$location
       $scope.facts = []
 
     $scope.view = (factId)-> $location.path("/facts/#{factId}")
+
+    $scope.newFact = -> $location.path('/facts/new')
+    $scope.edit = (factId) -> $location.path("/facts/#{factId}/edit")
 ])

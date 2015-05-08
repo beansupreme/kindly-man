@@ -18,8 +18,14 @@ factoids.config(['$routeProvider', 'flashProvider',
     .when('/',
       templateUrl: "index.html"
       controller: 'FactsController'
+    ).when('/facts/new',
+      templateUrl: 'form.html'
+      controller: 'FactController'
     ).when('/facts/:factId',
       templateUrl: 'show.html'
+      controller: 'FactController'
+    ).when('/facts/:factId/edit',
+      templateUrl: 'form.html'
       controller: 'FactController'
     )
 ])

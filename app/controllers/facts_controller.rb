@@ -1,4 +1,6 @@
 class FactsController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+
   def index
     @facts = if params[:keywords]
       Fact.where('title like ?', "%#{params[:keywords]}%")
