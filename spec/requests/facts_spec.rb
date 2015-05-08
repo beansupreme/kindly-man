@@ -72,6 +72,34 @@ describe "Facts API" do
 
   end
 
+  describe 'GET /facts/:id' do
+    context 'when the fact exists' do
+      before do
+        xhr :get, "/facts/#{leukemia_fact.id}", format: :json
+      end
+
+      it 'returns 200' do
+        expect(response.status).to eq(200)
+      end
+
+      it 'returns the fact' do
+        results = JSON.parse(response.body)
+        expect(results).to eq({
+                                  'id' => leukemia_fact.id,
+                                  'title' => 'Leukemia Treatment',
+                                  'subject' => 'Is now being treated with a modified HIV strain'
+                              })
+      end
+    end
+
+    context 'when the fact does not exist' do
+      it 'returns 404' do
+        xhr :get, "/facts/#{42}", format: :json
+        expect(response.status).to be(404)
+      end
+    end
+  end
+
   describe 'POST /facts' do
     it 'creates a new fact' do
       fact_params = {title: 'Radiohead', subject: 'Is the greatest band in the world'}

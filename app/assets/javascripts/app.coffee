@@ -1,16 +1,26 @@
-factoids = angular.module('factoids',[
+factoids = angular.module('factoids', [
   'templates',
   'ngRoute',
   'ngResource',
   'controllers',
+  'angular-flash.service',
+  'angular-flash.flash-alert-directive'
 ])
 
-factoids.config([ '$routeProvider',
-  ($routeProvider)->
+factoids.config(['$routeProvider', 'flashProvider',
+  ($routeProvider, flashProvider)->
+    flashProvider.errorClassnames.push("alert-danger")
+    flashProvider.warnClassnames.push("alert-warning")
+    flashProvider.infoClassnames.push("alert-info")
+    flashProvider.successClassnames.push("alert-success")
+
     $routeProvider
     .when('/',
       templateUrl: "index.html"
       controller: 'FactsController'
+    ).when('/facts/:factId',
+      templateUrl: 'show.html'
+      controller: 'FactController'
     )
 ])
 
@@ -32,4 +42,4 @@ facts = [
     title: 'Earthworms come out during the rain',
   },
 ]
-controllers = angular.module('controllers',[])
+controllers = angular.module('controllers', [])

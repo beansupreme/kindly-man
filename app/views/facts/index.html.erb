@@ -1,26 +1,3 @@
-<h3>What have you learned today?</h3>
-
-<h4>Recorded Facts:</h4>
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Subject</th>
-    <th>Date added</th>
-    <th colspan="2"></th>
-  </tr>
-  <% @facts.each do |fact| %>
-      <tr>
-        <td><%= fact.title %></td>
-        <td><%= fact.subject %></td>
-        <td><%= fact.created_at %></td>
-        <td><%= link_to "Edit Fact", edit_fact_path(fact) %></td>
-        <td><%= link_to "Destroy Fact", fact_path(fact), method: :delete %></td>
-      </tr>
-  <% end %>
-</table>
-
-<%= link_to "Add a fact", action: "new" %>
-
 <div ng-app="factoids">
   <div class="view-container">
     <div ng-view class="view-frame animate-view"></div>

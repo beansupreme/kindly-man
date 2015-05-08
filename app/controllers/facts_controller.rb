@@ -11,6 +11,11 @@ class FactsController < ApplicationController
     end
   end
 
+  def show
+    @fact = Fact.find(params[:id])
+    render :json => json_attributes(@fact)
+  end
+
   def new
     @fact = Fact.new
   end

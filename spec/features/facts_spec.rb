@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'using the facts page' do
   let!(:fact) { Fact.create!(title: 'Raindrops', subject: 'Usually only grow to about 9mm in diameter') }
 
-  it 'shows a informative home page listing the existing facts' do
+  xit 'shows a informative home page listing the existing facts' do
     visit '/'
 
     expect(page).to have_content 'What have you learned today?'
@@ -11,7 +11,7 @@ describe 'using the facts page' do
     expect(page).to have_content 'Usually only grow to about 9mm in diameter'
   end
 
-  it 'can add a new fact' do
+  xit 'can add a new fact' do
     visit '/facts'
 
     click_on 'Add a fact'
@@ -27,7 +27,7 @@ describe 'using the facts page' do
     expect(page).to have_content 'They come out during rainstorms because it is easy for them to move around'
   end
 
-  it 'does not allow filling out a blank fact' do
+  xit 'does not allow filling out a blank fact' do
     visit '/facts/new'
 
     fill_in 'fact[title]', with: ''
@@ -39,7 +39,7 @@ describe 'using the facts page' do
     expect(page).to have_content "Subject can't be blank"
   end
 
-  it 'can update an existing fact' do
+  xit 'can update an existing fact' do
     visit '/facts/'
     click_on 'Edit Fact'
 
@@ -50,7 +50,7 @@ describe 'using the facts page' do
     expect(page).to have_content 'Raindrop size'
   end
 
-  it 'can destroy an existing fact' do
+  xit 'can destroy an existing fact' do
     visit '/facts/'
     click_on 'Destroy Fact'
 
