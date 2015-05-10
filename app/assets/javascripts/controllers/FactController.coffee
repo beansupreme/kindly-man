@@ -18,7 +18,9 @@ controllers.controller('FactController', ['$scope', '$routeParams', '$resource',
         )
       )
     else
-      $scope.fact = {}
+      $scope.fact =
+        title: ''
+        subject: ''
 
     $scope.back = -> $location.path('/')
     $scope.edit = -> $location.path("/facts/#{$scope.fact.id}/edit")
@@ -29,7 +31,12 @@ controllers.controller('FactController', ['$scope', '$routeParams', '$resource',
         $location.path('/')
 
     $scope.save = ->
-      onError = (_httpResponse)-> flash.error = 'Something went wrong'
+      onError = (httpResponse)->
+        if httpResponse['data'] && httpResponse['data']['errors']
+          angular.forEach(httpResponse['data']['errors'], (value, key)->
+            flash.error = "#{key} #{value[0]}"
+            return
+          )
       if $scope.fact.id
         $scope.fact.$save(
           ( ()-> $location.path("/facts/#{$scope.fact.id}")),

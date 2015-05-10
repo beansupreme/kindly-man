@@ -8,8 +8,18 @@ describe 'using the facts page' do
 
     expect(page).to have_content 'Enter a new fact'
 
+    fill_in 'title', with: ''
+    fill_in 'subject', with: ''
+
+    click_on 'Save'
+    expect(page).to have_content("title can't be blank")
     fill_in 'title', with: 'Earthworms'
+
+    click_on 'Save'
+
+    expect(page).to have_content("subject can't be blank")
     fill_in 'subject', with: 'They come out during rainstorms because it is easy for them to move around'
+
 
     click_on 'Save'
 
@@ -19,6 +29,13 @@ describe 'using the facts page' do
     click_on 'Edit'
 
     fill_in 'title', with: 'Earthworms love the rain'
+    fill_in 'subject', with: ''
+
+    click_on 'Save'
+
+    expect(page).to have_content "subject can't be blank"
+
+    fill_in 'subject', with: 'Rainstorms provide a good opportunity to mate'
 
     click_on 'Save'
 
@@ -28,19 +45,6 @@ describe 'using the facts page' do
 
     expect(page).to_not have_content 'Earthworms love the rain'
   end
-
-  xit 'does not allow filling out a blank fact' do
-    visit '/facts/new'
-
-    fill_in 'fact[title]', with: ''
-    fill_in 'fact[subject]', with: ''
-
-    click_on 'Create Fact'
-
-    expect(page).to have_content "Title can't be blank"
-    expect(page).to have_content "Subject can't be blank"
-  end
-
 
   it 'lists all facts, and can search through facts', js: true do
     Fact.create!(title: 'Raindrops', subject: 'Usually only grow to about 9mm in diameter')

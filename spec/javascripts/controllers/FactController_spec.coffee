@@ -53,7 +53,7 @@ describe 'FactController', ->
       it 'loads no fact', ->
         httpBackend.flush()
         expect(scope.fact).toBe(null)
-        expect(flash.error).toBe("There is no fact with ID #{factId}")
+        expect(angular.equals(flash.error, "There is no fact with ID #{factId}")).toBeTruthy()
 
   describe 'create', ->
     newFact =
@@ -61,17 +61,38 @@ describe 'FactController', ->
       title: 'Storms'
       subject: 'Are common in the Spring'
 
-    beforeEach ->
-      setupController(false, false)
-      request = new RegExp("\/facts")
-      httpBackend.expectPOST(request).respond(201, newFact)
+    describe 'with a new fact', ->
+      beforeEach ->
+        setupController(false, false)
+        request = new RegExp("\/facts")
+        httpBackend.expectPOST(request).respond(201, newFact)
 
-    it 'posts to the backend', ->
-      scope.fact.title = newFact.title
-      scope.fact.subject = newFact.subject
-      scope.save()
-      httpBackend.flush()
-      expect(location.path()).toBe("/facts/#{newFact.id}")
+      it 'posts to the backend', ->
+        scope.fact.title = newFact.title
+        scope.fact.subject = newFact.subject
+        scope.save()
+        httpBackend.flush()
+        expect(location.path()).toBe("/facts/#{newFact.id}")
+
+    describe 'when the fact is empty', ->
+      emptyFact =
+        title: ''
+        subject: ''
+
+      beforeEach ->
+        setupController(false, false)
+        request = new RegExp("\/facts")
+        errorMessages =
+          'errors':
+            'subject':
+              ["can't be blank"]
+
+        httpBackend.expectPOST(request, emptyFact).respond(400, errorMessages)
+
+      it 'posts empty data and displays an error', ->
+        scope.save()
+        httpBackend.flush()
+        expect(flash.error).toEqual("subject can't be blank")
 
   describe 'update', ->
     updatedFact =
