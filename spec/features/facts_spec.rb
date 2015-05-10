@@ -1,16 +1,6 @@
 require 'rails_helper'
 
 describe 'using the facts page' do
-  let!(:fact) { Fact.create!(title: 'Raindrops', subject: 'Usually only grow to about 9mm in diameter') }
-
-  xit 'shows a informative home page listing the existing facts' do
-    visit '/'
-
-    expect(page).to have_content 'What have you learned today?'
-    expect(page).to have_content 'Raindrops'
-    expect(page).to have_content 'Usually only grow to about 9mm in diameter'
-  end
-
   it 'allows me to create, update, and delete a fact', js: true do
     visit '/facts'
 
@@ -52,9 +42,13 @@ describe 'using the facts page' do
   end
 
 
-  it 'can search through facts', js: true do
+  it 'lists all facts, and can search through facts', js: true do
+    Fact.create!(title: 'Raindrops', subject: 'Usually only grow to about 9mm in diameter')
     Fact.create!(title: 'bats are cool', subject: 'Bats eat a large number of mosquitos')
     visit '/facts/'
+
+    expect(page).to have_content 'Raindrops'
+    expect(page).to have_content 'bats are cool'
 
     fill_in 'keywords', with: 'bats'
     click_on 'Search'

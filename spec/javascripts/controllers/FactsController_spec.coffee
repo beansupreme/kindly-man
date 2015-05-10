@@ -18,7 +18,10 @@ describe 'FactsController', ->
       httpBackend = $httpBackend
 
       if results
-        request = new RegExp("\/facts.*keywords=#{keywords}")
+        request = if keywords
+          new RegExp("\/facts.*keywords=#{keywords}")
+        else
+          new RegExp("\/facts")
         httpBackend.expectGET(request).respond(results)
 
       ctrl = $controller('FactsController',
@@ -33,24 +36,27 @@ describe 'FactsController', ->
     httpBackend.verifyNoOutstandingRequest()
 
   describe 'controller initialization', ->
-    describe 'when no keywords present', ->
-      beforeEach(setupController())
+    facts = [
+      {
+        id: 2,
+        title: 'Bears'
+      },
+      {
+        id: 4,
+        title: 'Tigers'
+      }
+    ]
 
-      it 'defaults to no facts', ->
-        expect(scope.facts).toEqual([])
+    describe 'when no keywords present', ->
+      beforeEach ->
+        setupController('', facts)
+        httpBackend.flush()
+
+      it 'calls the back-end for all facts', ->
+        expect(angular.equals(scope.facts, facts)).toBeTruthy()
 
     describe 'with keywords', ->
       keywords = 'foo'
-      facts = [
-        {
-          id: 2,
-          title: 'Bears'
-        },
-        {
-          id: 4,
-          title: 'Tigers'
-        }
-      ]
 
       beforeEach ->
         setupController(keywords, facts)
@@ -62,7 +68,8 @@ describe 'FactsController', ->
 
   describe 'search()', ->
     beforeEach ->
-      setupController()
+      setupController('', [])
+      httpBackend.flush()
 
     it 'redirects to itself with a keyword param', ->
       keywords = 'foo'

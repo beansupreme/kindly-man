@@ -7,7 +7,7 @@ controllers.controller("FactsController", [ '$scope', '$routeParams', '$location
     if $routeParams.keywords
       Fact.query(keywords: $routeParams.keywords, (results)-> $scope.facts = results)
     else
-      $scope.facts = []
+      Fact.query((results)-> $scope.facts = results)
 
     $scope.view = (factId)-> $location.path("/facts/#{factId}")
 
